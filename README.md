@@ -10,6 +10,11 @@ A lightweight Django app for user management with **Admin/User roles**, a **mode
 <img width="1901" height="911" alt="Screenshot 2026-01-31 031029" src="https://github.com/user-attachments/assets/5d7096da-9f07-454d-b289-22a9ddd0c8fc" />
 <img width="1903" height="910" alt="Screenshot 2026-01-31 031046" src="https://github.com/user-attachments/assets/8977355d-bb24-41a2-9318-ad775e465a40" />
 
+# Coding
+80% Vibe Coding for Frontend 
+20% myself for Backend/Database
+THIS PROJECT STILL IN DEVELOPMENT
+
 ## Highlights
 
 - Authentication + sessions
