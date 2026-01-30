@@ -1,6 +1,14 @@
 # User Management Dashboard
 
 A lightweight Django app for user management with **Admin/User roles**, a **modern UI** (Bootstrap + Tailwind + custom CSS), and a **local JSON file** as the data store.
+<img width="1896" height="911" alt="Screenshot 2026-01-31 024830" src="https://github.com/user-attachments/assets/ff69d9e3-8a34-41e5-8b7c-6fd8eae62758" />
+<img width="1918" height="909" alt="Screenshot 2026-01-31 025203" src="https://github.com/user-attachments/assets/c151eabc-48ff-4636-a7c8-c9882603cd1d" />
+<img width="1901" height="911" alt="Screenshot 2026-01-31 030851" src="https://github.com/user-attachments/assets/dec577ae-5bfc-4f03-b29f-78c8dc0d637e" />
+<img width="1903" height="909" alt="Screenshot 2026-01-31 030907" src="https://github.com/user-attachments/assets/a9dc861f-7b47-4683-9e55-936f6b136e6e" />
+<img width="1902" height="885" alt="Screenshot 2026-01-31 030936" src="https://github.com/user-attachments/assets/91f09fc2-ba3a-4258-991c-8dac10a4c8df" />
+<img width="1900" height="906" alt="Screenshot 2026-01-31 030949" src="https://github.com/user-attachments/assets/6112f7b1-84f9-497c-844d-5bc76ebd781c" />
+<img width="1901" height="911" alt="Screenshot 2026-01-31 031029" src="https://github.com/user-attachments/assets/5d7096da-9f07-454d-b289-22a9ddd0c8fc" />
+<img width="1903" height="910" alt="Screenshot 2026-01-31 031046" src="https://github.com/user-attachments/assets/8977355d-bb24-41a2-9318-ad775e465a40" />
 
 ## Highlights
 
