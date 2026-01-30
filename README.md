@@ -124,23 +124,11 @@ This project is intended for learning/demo use.
 
 If you deploy this publicly, switch to Django’s auth + a real database, add password hashing, and set `DEBUG=False`.
 
-## Deploy (no credit card)
-
-### Vercel (recommended for a quick try)
-
-This repo includes a Vercel Serverless entrypoint.
-
-1. Push this project to GitHub.
-2. In Vercel: **New Project** → import the repo.
-3. Set **Environment Variables**:
-	- `SECRET_KEY` = a random long string
-	- `DEBUG` = `True` (easiest for first deploy)
-4. Deploy.
 
 Important limitation (because this project uses a local JSON file as a database):
 
 - On Vercel/serverless, writes are not permanent. The app will work, but any changes you make (new users, payroll edits) can reset on a new deployment or cold start.
-- For permanent storage, move data to a real database (Postgres) or an external KV/storage service.
+- For permanent storage, move data to a real database (Postgres) or an external KV/storage service as you like.
 
 ## Troubleshooting
 
