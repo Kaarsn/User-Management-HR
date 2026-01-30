@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+<body class="index-page">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top umd-navbar">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+                <span class="brand-mark"><i class="fas fa-shield-alt"></i></span>
+                <span class="brand-text">User Manager</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#quick-access">Quick Access</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-light btn-sm umd-nav-btn" href="/register">
+                            <i class="fas fa-user-plus me-1"></i> Register
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-light btn-sm umd-nav-btn" href="/login">
+                            <i class="fas fa-sign-in-alt me-1"></i> Login
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="container">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-7">
+                    <div class="hero-badge mb-3">
+                        <i class="fas fa-sparkles"></i>
+                        <span>Modern user management + payroll PDFs</span>
+                    </div>
+                    <h1 class="display-5 fw-bold mb-3 hero-title">
+                        Run your team dashboard
+                        <span class="hero-title-accent">fast</span>.
+                    </h1>
+                    <p class="lead mb-4 hero-subtitle">
+                        Admins manage users, roles, payroll history, and PDF salary slips. Users get a clean dashboard to view info and download slips.
+                    </p>
+
+                    <div class="d-flex flex-column flex-sm-row gap-2">
+                        <a href="#quick-access" class="btn btn-light btn-lg">
+                            <i class="fas fa-bolt me-2"></i> Quick access
+                        </a>
+                        <a href="#features" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-layer-group me-2"></i> Explore features
+                        </a>
+                    </div>
+
+                    <div class="hero-meta mt-4">
+                        <div class="hero-meta-item">
+                            <i class="fas fa-shield-check"></i>
+                            <span>Role-based access</span>
+                        </div>
+                        <div class="hero-meta-item">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>Payroll PDF generation</span>
+                        </div>
+                        <div class="hero-meta-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>Email verification</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="hero-card">
+                        <div class="hero-card-top">
+                            <div class="hero-card-dot"></div>
+                            <div class="hero-card-dot"></div>
+                            <div class="hero-card-dot"></div>
+                        </div>
+                        <div class="hero-card-body">
+                            <img class="hero-illustration" src="{% static 'img/api-interface-svgrepo-com.svg' %}" alt="Dashboard illustration">
+                            <div class="hero-card-caption">
+                                <div class="caption-title">One app, two portals</div>
+                                <div class="caption-subtitle">Admin + User dashboards with the same login.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Quick Access -->
+    <section id="quick-access" class="quick-access-section">
+        <div class="container">
+            <div class="section-head">
+                <h2 class="section-title">Quick access</h2>
+                <p class="section-subtitle">Jump straight into the right portal. Demo buttons can auto-fill credentials.</p>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="quick-card">
+                        <div class="quick-icon admin">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="quick-content">
+                            <h3 class="quick-title">Admin portal</h3>
+                            <p class="quick-desc">Manage users, roles, payroll records, and generate PDF slips.</p>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a class="btn btn-primary umd-btn" href="/login?demo=admin">
+                                    <i class="fas fa-play me-2"></i> Try admin demo
+                                </a>
+                                <a class="btn btn-outline-secondary" href="/login">
+                                    <i class="fas fa-right-to-bracket me-2"></i> Login
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="quick-card">
+                        <div class="quick-icon user">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="quick-content">
+                            <h3 class="quick-title">Employee dashboard</h3>
+                            <p class="quick-desc">See profile details, view payroll history, and download PDF slips.</p>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a class="btn btn-primary umd-btn" href="/login?demo=user">
+                                    <i class="fas fa-play me-2"></i> Try user demo
+                                </a>
+                                <a class="btn btn-outline-secondary" href="/register">
+                                    <i class="fas fa-user-plus me-2"></i> Register
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <div class="section-head text-center">
+                <h2 class="section-title">Features</h2>
+                <p class="section-subtitle">Everything you need for a lightweight HR-style dashboard.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card feature-card">
+                        <div class="card-body text-center">
+                            <div class="feature-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <h5 class="card-title">Role-based access</h5>
+                            <p class="card-text">Admin and user dashboards with protected routes.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card feature-card">
+                        <div class="card-body text-center">
+                            <div class="feature-icon">
+                                <i class="fas fa-user-gear"></i>
+                            </div>
+                            <h5 class="card-title">User management</h5>
+                            <p class="card-text">Create, edit, deactivate, and organize employee profiles.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card feature-card">
+                        <div class="card-body text-center">
+                            <div class="feature-icon">
+                                <i class="fas fa-money-check-dollar"></i>
+                            </div>
+                            <h5 class="card-title">Payroll history</h5>
+                            <p class="card-text">Track monthly salary records and status updates.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card feature-card">
+                        <div class="card-body text-center">
+                            <div class="feature-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <h5 class="card-title">PDF salary slips</h5>
+                            <p class="card-text">Generate clean PDF slips per user and month.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card feature-card">
+                        <div class="card-body text-center">
+                            <div class="feature-icon">
+                                <i class="fas fa-address-book"></i>
+                            </div>
+                            <h5 class="card-title">Employee directory</h5>
+                            <p class="card-text">Search users by department, position, email, and phone.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card feature-card">
+                        <div class="card-body text-center">
+                            <div class="feature-icon">
+                                <i class="fas fa-envelope-circle-check"></i>
+                            </div>
+                            <h5 class="card-title">Email verification</h5>
+                            <p class="card-text">Token-based verification flow for new accounts.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-wrap">
+                <div class="stat">
+                    <div class="stat-icon"><i class="fas fa-user-shield"></i></div>
+                    <div class="stat-value">Roles</div>
+                    <div class="stat-label">Admin and Users</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-icon"><i class="fas fa-file-pdf"></i></div>
+                    <div class="stat-value">PDF</div>
+                    <div class="stat-label">Salary slips</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-icon"><i class="fas fa-database"></i></div>
+                    <div class="stat-value">JSON</div>
+                    <div class="stat-label">Simple storage</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="umd-footer">
+        <div class="container">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-6">
+                    <div class="footer-brand">
+                        <span class="brand-mark"><i class="fas fa-shield-alt"></i></span>
+                        <div>
+                            <div class="footer-title">User Management Dashboard</div>
+                            <div class="footer-subtitle">Built with Django + Bootstrap</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="footer-links">
+                        <a href="/">Home</a>
+                        <a href="#features">Features</a>
+                        <a href="#quick-access">Quick access</a>
+                        <a href="/login">Login</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div>&copy; 2026 User Management Dashboard.</div>
+                <div class="text-white-50">No ads. No tracking. Just productivity.</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

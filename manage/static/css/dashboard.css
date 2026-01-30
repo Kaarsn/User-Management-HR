@@ -1,0 +1,262 @@
+/* Dashboard Page Styles */
+
+:root {
+    --dash-bg: #f5f7fa;
+    --dash-surface: rgba(255, 255, 255, 0.92);
+    --dash-surface-solid: #ffffff;
+    --dash-text: #0f172a;
+    --dash-muted: rgba(15, 23, 42, 0.68);
+    --dash-border: rgba(15, 23, 42, 0.10);
+    --dash-shadow: 0 12px 30px rgba(15, 23, 42, 0.10);
+    --dash-shadow-soft: 0 10px 24px rgba(15, 23, 42, 0.08);
+    --dash-accent-1: #7c3aed;
+    --dash-accent-2: #22d3ee;
+    --dash-sidebar: #0b1020;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body.dashboard-page {
+    background: var(--dash-bg);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--dash-text);
+}
+
+.navbar {
+    padding: 0.85rem 1.25rem;
+    position: fixed;
+    top: 0;
+    left: 250px;
+    right: 0;
+    z-index: 50;
+    transition: left 0.3s ease;
+
+    background: var(--dash-surface);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--dash-border) !important;
+    box-shadow: none !important;
+}
+
+.navbar.expanded {
+    left: 0;
+}
+
+.dashboard-wrapper {
+    position: relative;
+    min-height: calc(100vh - 64px);
+}
+
+.sidebar {
+    background:
+        radial-gradient(900px 380px at 10% 0%, rgba(124, 58, 237, 0.35), transparent 60%),
+        radial-gradient(700px 360px at 90% 10%, rgba(34, 211, 238, 0.25), transparent 55%),
+        linear-gradient(180deg, #0b1020 0%, #0c1633 100%);
+    min-height: 100vh;
+    max-height: 100vh;
+    width: 250px;
+    padding: 20px;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: transform 0.3s ease;
+    z-index: 100;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.5s ease;
+
+    border-right: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow: 18px 0 45px rgba(2, 6, 23, 0.18);
+}
+
+.sidebar:hover,
+.sidebar.scrolling {
+    scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 4px;
+    transition: background 0.5s ease;
+}
+
+.sidebar:hover::-webkit-scrollbar-thumb,
+.sidebar.scrolling::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.sidebar .nav,
+.sidebar .sidebar-nav,
+.sidebar .sidebar-nav ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.sidebar.hidden {
+    transform: translateX(-100%);
+}
+
+.main-content {
+    margin-left: 250px;
+    margin-top: 64px;
+    padding: 1.75rem;
+    transition: margin-left 0.3s ease;
+    min-height: calc(100vh - 64px);
+}
+
+.main-content.expanded {
+    margin-left: 0;
+}
+
+.sidebar .nav-link {
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 10px;
+    border-radius: 12px;
+    padding: 10px 12px;
+    transition: all 0.3s ease;
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar .nav-link span,
+.sidebar .nav-link i {
+    color: inherit !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: inline-block !important;
+}
+
+.sidebar .nav-link[data-bs-toggle="collapse"] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sidebar .nav-link:hover {
+    background: rgba(255,255,255,0.10);
+    color: white;
+}
+
+.sidebar .nav-link.active {
+    background: rgba(255,255,255,0.14);
+    color: white;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.sidebar .collapse .nav-link {
+    color: rgba(255,255,255,0.7);
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+}
+
+.sidebar .collapse .nav-link:hover {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    padding-left: 25px;
+}
+
+.sidebar .collapse .nav-link i {
+    margin-right: 8px;
+}
+
+.profile-card {
+    border: 1px solid var(--dash-border);
+    box-shadow: var(--dash-shadow-soft);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.profile-card .card-header {
+    background: white;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.stat-card {
+    background: var(--dash-surface-solid);
+    border: 1px solid var(--dash-border);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: var(--dash-shadow-soft);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--dash-shadow);
+}
+
+.stat-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.navbar-dark {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.dropdown-menu {
+    border: none;
+    box-shadow: var(--dash-shadow);
+    border-radius: 14px;
+    border: 1px solid var(--dash-border);
+}
+
+.dropdown-item {
+    padding: 0.75rem 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f4ff;
+    color: var(--dash-accent-1);
+}
+
+/* Make main headings a bit tighter */
+.main-content h2.fw-bold {
+    letter-spacing: -0.5px;
+}
+
+/* Slightly soften default muted text */
+.text-muted {
+    color: var(--dash-muted) !important;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: -100%;
+        top: 0;
+        width: 250px;
+        height: 100vh;
+        z-index: 1000;
+        transition: left 0.3s ease;
+    }
+    
+    .sidebar.show {
+        left: 0;
+    }
+}

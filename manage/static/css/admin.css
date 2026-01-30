@@ -1,0 +1,462 @@
+/* Admin Panel Page Styles */
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --admin-bg: #0b1220;
+    --admin-surface: rgba(255, 255, 255, 0.08);
+    --admin-surface-solid: #0f172a;
+    --admin-surface-2: rgba(255, 255, 255, 0.06);
+    --admin-border: rgba(255, 255, 255, 0.12);
+    --admin-border-strong: rgba(255, 255, 255, 0.18);
+    --admin-text: rgba(255, 255, 255, 0.92);
+    --admin-text-muted: rgba(255, 255, 255, 0.7);
+    --admin-accent: #7c3aed;
+    --admin-accent-2: #22c55e;
+    --admin-accent-warm: #f59e0b;
+    --admin-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    --admin-shadow-soft: 0 10px 28px rgba(0, 0, 0, 0.22);
+    --admin-radius: 16px;
+    --admin-radius-sm: 12px;
+}
+
+body.admin-page {
+    background: radial-gradient(1200px 500px at 15% -10%, rgba(124, 58, 237, 0.35), transparent 60%),
+                radial-gradient(900px 420px at 90% 0%, rgba(34, 197, 94, 0.22), transparent 55%),
+                radial-gradient(900px 420px at 70% 110%, rgba(245, 158, 11, 0.14), transparent 55%),
+                linear-gradient(180deg, #070b14 0%, #0b1220 40%, #0b1220 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--admin-text);
+}
+
+.sidebar {
+    background:
+        radial-gradient(900px 420px at 30% 0%, rgba(124, 58, 237, 0.55), transparent 60%),
+        radial-gradient(700px 380px at 80% 40%, rgba(34, 197, 94, 0.22), transparent 60%),
+        linear-gradient(160deg, #0b1220 0%, #0f172a 55%, #111827 100%);
+    min-height: 100vh;
+    max-height: 100vh;
+    padding: 20px;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    overflow-y: auto;
+    z-index: 100;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.5s ease;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 70px rgba(0, 0, 0, 0.45);
+}
+
+.sidebar h4 {
+    letter-spacing: 0.2px;
+}
+
+.sidebar .text-white-50,
+.sidebar p.small {
+    color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.sidebar hr {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    opacity: 1;
+}
+
+.sidebar:hover,
+.sidebar.scrolling {
+    scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 4px;
+    transition: background 0.5s ease;
+}
+
+.sidebar:hover::-webkit-scrollbar-thumb,
+.sidebar.scrolling::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 2rem;
+    min-height: 100vh;
+}
+
+/* Top area (page title + actions) */
+#pageHeaderTitle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    letter-spacing: -0.2px;
+    color: var(--admin-text);
+}
+
+#pageHeaderActions .btn {
+    border-radius: 999px;
+    padding: 10px 14px;
+    border-width: 1px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+}
+
+.sidebar .nav,
+.sidebar .sidebar-nav,
+.sidebar .sidebar-nav ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.sidebar .nav-link {
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 10px;
+    border-radius: 8px;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+    opacity: 1 !important;
+    visibility: visible !important;
+    border: 1px solid transparent;
+}
+
+.sidebar .nav-link span,
+.sidebar .nav-link i {
+    color: inherit !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: inline-block !important;
+}
+
+.sidebar .nav-link[data-bs-toggle="collapse"] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sidebar .nav-link:hover {
+    background: rgba(255,255,255,0.08);
+    color: white;
+    border-color: rgba(255,255,255,0.12);
+}
+
+.sidebar .nav-link.active {
+    background: rgba(124, 58, 237, 0.22);
+    color: white;
+    border-color: rgba(124, 58, 237, 0.28);
+}
+
+.sidebar .collapse .nav-link {
+    color: rgba(255,255,255,0.7);
+    padding: 8px 15px;
+    font-size: 0.9rem;
+}
+
+.sidebar .collapse .nav-link:hover {
+    background: rgba(255,255,255,0.10);
+    color: white;
+    padding-left: 25px;
+}
+
+.sidebar .collapse .nav-link i {
+    margin-right: 8px;
+}
+
+.card {
+    border: 1px solid var(--admin-border);
+    box-shadow: var(--admin-shadow-soft);
+    border-radius: var(--admin-radius);
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    overflow: hidden;
+}
+
+@supports not ((backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px))) {
+    .card {
+        background: var(--admin-surface-solid);
+    }
+}
+
+.card-header {
+    background: rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid var(--admin-border);
+    color: var(--admin-text);
+}
+
+.card-header .text-muted,
+.card-header small {
+    color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.card-body {
+    color: var(--admin-text);
+}
+
+.table-responsive {
+    border-radius: var(--admin-radius);
+}
+
+.table {
+    margin-bottom: 0;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.table thead {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.table thead th {
+    border-bottom: 1px solid var(--admin-border);
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    text-transform: none;
+}
+
+/* If a light header variant is used, keep text dark */
+.table thead.table-light {
+    background: #f8fafc !important;
+}
+
+.table thead.table-light th {
+    color: #0f172a !important;
+    border-bottom-color: rgba(15, 23, 42, 0.12) !important;
+}
+
+.table tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    transition: background-color 0.3s ease;
+}
+
+.table tbody tr td {
+    vertical-align: middle;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+.table td,
+.table th {
+    border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+.table .text-muted {
+    color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.btn-sm-custom {
+    padding: 5px 10px;
+    font-size: 0.85rem;
+}
+
+/* Buttons: keep Bootstrap behavior, improve visuals */
+.btn {
+    border-radius: 12px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--admin-accent) 0%, #5b21b6 100%);
+    border-color: rgba(124, 58, 237, 0.35);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+    border-color: rgba(139, 92, 246, 0.45);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--admin-accent-2) 0%, #16a34a 100%);
+    border-color: rgba(34, 197, 94, 0.35);
+}
+
+.btn-outline-primary {
+    color: rgba(255, 255, 255, 0.88);
+    border-color: rgba(124, 58, 237, 0.35);
+}
+
+.btn-outline-primary:hover {
+    background: rgba(124, 58, 237, 0.18);
+    border-color: rgba(124, 58, 237, 0.45);
+    color: #fff;
+}
+
+.navbar-dark {
+    background: linear-gradient(135deg, #0b1220 0%, #111827 100%);
+}
+
+.badge-admin {
+    background: linear-gradient(135deg, var(--admin-accent) 0%, #5b21b6 100%);
+    color: white;
+}
+
+.badge-user {
+    background: linear-gradient(135deg, var(--admin-accent-2) 0%, #16a34a 100%);
+    color: white;
+}
+
+.badge {
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.95) 0%, rgba(91, 33, 182, 0.95) 100%);
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.modal-content {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--admin-radius);
+    overflow: hidden;
+    box-shadow: var(--admin-shadow);
+}
+
+/* Keep Bootstrap modals readable (default modal is light) */
+.modal-content {
+    background: #ffffff;
+    color: #0f172a;
+    border-color: rgba(15, 23, 42, 0.12);
+}
+
+.modal-body,
+.modal-footer {
+    color: #0f172a;
+}
+
+.modal-body .text-muted,
+.modal-body small,
+.modal-body .form-text {
+    color: rgba(15, 23, 42, 0.65) !important;
+}
+
+.modal-body .form-control,
+.modal-body .form-select {
+    background: #ffffff;
+    color: #0f172a;
+    border-color: rgba(15, 23, 42, 0.18);
+}
+
+.modal-body .form-control::placeholder {
+    color: rgba(15, 23, 42, 0.45);
+}
+
+.modal-body .input-group-text {
+    background: #f8fafc;
+    color: #0f172a;
+    border-color: rgba(15, 23, 42, 0.18);
+}
+
+.modal-backdrop.show {
+    opacity: 0.65;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: rgba(124, 58, 237, 0.55);
+    box-shadow: 0 0 0 0.2rem rgba(124, 58, 237, 0.22);
+}
+
+.form-control,
+.form-select,
+.input-group-text {
+    border-radius: 12px;
+}
+
+.input-group .input-group-text {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.8);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.input-group .form-control {
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.92);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.input-group .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.alert {
+    display: none;
+    border: none;
+    border-radius: 8px;
+}
+
+.alert-danger {
+    background: rgba(239, 68, 68, 0.16);
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.alert-success {
+    background: rgba(34, 197, 94, 0.16);
+    color: rgba(255, 255, 255, 0.92);
+}
+
+/* Links */
+a {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+a:hover {
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: -100%;
+        top: 0;
+        width: 250px;
+        height: 100vh;
+        z-index: 1000;
+        transition: left 0.3s ease;
+    }
+    
+    .sidebar.show {
+        left: 0;
+    }
+    
+    .table {
+        font-size: 0.85rem;
+    }
+    
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 1.25rem;
+    }
+}

@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - User Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+</head>
+<body class="admin-page">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="mb-4">
+            <h4 class="fw-bold">
+                <i class="fas fa-shield-alt"></i> Admin Panel
+            </h4>
+            <p class="small text-white-50">Administrator</p>
+        </div>
+
+        <hr class="bg-white-50">
+
+        <ul class="nav flex-column sidebar-nav list-unstyled">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="collapse" href="#usersDropdown" role="button" aria-expanded="false">
+                    <span><i class="fas fa-users"></i> Users</span>
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+                <div class="collapse" id="usersDropdown">
+                    <ul class="nav flex-column list-unstyled">
+                        <li><a class="nav-link ps-4" href="/admin"><i class="fas fa-list"></i> All Users</a></li>
+                        <li>
+                            <a class="nav-link ps-4" href="javascript:void(0);" onclick="(function(){ const el=document.getElementById('addUserModal'); if(!el) return false; const m = bootstrap.Modal.getInstance(el) || new bootstrap.Modal(el); m.show(); return false; })();">
+                                <i class="fas fa-user-plus"></i> Add User
+                            </a>
+                        </li>
+                        <li><a class="nav-link ps-4" href="#roles"><i class="fas fa-shield-alt"></i> Manage Roles</a></li>
+                    </ul>
+                </div>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#directoryDropdown" role="button" aria-expanded="false">
+                    <span><i class="fas fa-address-book"></i> User Directory</span>
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+                <div class="collapse" id="directoryDropdown">
+                    <ul class="nav flex-column list-unstyled">
+                        <li><a class="nav-link ps-4" href="javascript:void(0);" onclick="showUserDirectory();"><i class="fas fa-users"></i> All Users</a></li>
+                        <li><a class="nav-link ps-4" href="#departments"><i class="fas fa-building"></i> Departments</a></li>
+                        <li><a class="nav-link ps-4" href="#positions"><i class="fas fa-briefcase"></i> Positions</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#analyticsDropdown" role="button" aria-expanded="false">
+                    <span><i class="fas fa-chart-bar"></i> Analytics</span>
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+                <div class="collapse" id="analyticsDropdown">
+                    <ul class="nav flex-column list-unstyled">
+                        <li><a class="nav-link ps-4" href="#analytics"><i class="fas fa-chart-line"></i> User Stats</a></li>
+                        <li><a class="nav-link ps-4" href="#analytics"><i class="fas fa-clock"></i> Activity Log</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#payrollDropdown" role="button" aria-expanded="false">
+                    <span><i class="fas fa-money-check"></i> Payroll</span>
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+                <div class="collapse" id="payrollDropdown">
+                    <ul class="nav flex-column list-unstyled">
+                        <li><a class="nav-link ps-4" href="javascript:void(0);" onclick="showPayrollManagement();"><i class="fas fa-money-check"></i> Input Payroll</a></li>
+                        <li><a class="nav-link ps-4" href="javascript:void(0);" onclick="showPayrollHistory();"><i class="fas fa-history"></i> View Payroll History</a></li>
+                        <li><a class="nav-link ps-4" href="javascript:void(0);" onclick="showGeneratePDF();"><i class="fas fa-file-pdf"></i> Generate PDF Slip Gaji</a></li>
+                    </ul>
+                </div>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#settingsDropdown" role="button" aria-expanded="false">
+                    <span><i class="fas fa-cog"></i> Settings</span>
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+                <div class="collapse" id="settingsDropdown">
+                    <ul class="nav flex-column list-unstyled">
+                        <li><a class="nav-link ps-4" href="#settings"><i class="fas fa-sliders-h"></i> General Settings</a></li>
+                        <li><a class="nav-link ps-4" href="#settings"><i class="fas fa-envelope"></i> Email Settings</a></li>
+                        <li><a class="nav-link ps-4" href="#settings"><i class="fas fa-lock"></i> Security</a></li>
+                    </ul>
+                </div>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="/logout" onclick="return confirm('Are you sure?')">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold" id="pageHeaderTitle">
+                <i class="fas fa-users-cog"></i> User Management
+            </h2>
+            <div class="d-flex gap-2" id="pageHeaderActions">
+                <button class="btn btn-outline-primary" id="pageHeaderRefreshBtn" style="display:none;" type="button">
+                    <i class="fas fa-sync"></i> Refresh
+                </button>
+                <button class="btn btn-primary" id="pageHeaderAddPayrollBtn" style="display:none;" type="button">
+                    <i class="fas fa-plus"></i> New Payroll
+                </button>
+                <button class="btn btn-success" id="pageHeaderAddUserBtn" data-bs-toggle="modal" data-bs-target="#addUserModal" type="button">
+                    <i class="fas fa-plus"></i> Add New User
+                </button>
+            </div>
+        </div>
+
+        <!-- Alert Messages -->
+        <div class="alert alert-danger" id="errorAlert" role="alert" style="display: none;"></div>
+                <div class="alert alert-success" id="successAlert" role="alert" style="display: none;"></div>
+
+                <!-- Users Table -->
+                <div class="card" id="usersCard">
+                    <div class="card-header bg-white border-bottom">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">All Users</h5>
+                            <span class="badge bg-primary" id="userCount">0</span>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Picture</th>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTableBody">
+                                    <!-- Users will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Directory -->
+                <div class="card mt-4" id="directoryCard" style="display: none;">
+                    <div class="card-header bg-white border-bottom">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="mb-0">
+                                <i class="fas fa-address-book"></i> User Directory
+                            </h5>
+                            <button class="btn btn-sm btn-secondary" onclick="showUserManagement()">
+                                <i class="fas fa-arrow-left"></i> Back to Users
+                            </button>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <input type="text" class="form-control border-start-0" id="directorySearch" placeholder="Search by name, department, position, email, or phone...">
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Department</th>
+                                        <th>Position</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Emergency Contact</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="directoryTableBody">
+                                    <!-- Directory will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payroll Management -->
+                <div class="card mt-4" id="payrollManagement" style="display: none;">
+                    <div class="card-header bg-white border-bottom">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-0">
+                                    <i class="fas fa-money-check"></i> Input Payroll
+                                </h5>
+                                <small class="text-muted">Enter or update salary information for employees</small>
+                            </div>
+                            <span class="badge bg-primary" id="payrollUserCount">0</span>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Username</th>
+                                        <th>Department</th>
+                                        <th>Position</th>
+                                        <th>Payroll</th>
+                                        <th>Last Updated</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="payrollUsersTableBody">
+                                    <!-- Payroll users will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payroll History -->
+                <div class="card mt-4" id="payrollHistorySection" style="display: none;">
+                    <div class="card-header bg-white border-bottom">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-0">
+                                    <i class="fas fa-history"></i> View Payroll History
+                                </h5>
+                                <small class="text-muted">View all payroll records and salary history</small>
+                            </div>
+                            <button class="btn btn-sm btn-primary" onclick="window.loadAllPayrollHistory()">
+                                <i class="fas fa-sync"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Department</th>
+                                        <th>Latest Month</th>
+                                        <th>Latest Salary</th>
+                                        <th>Status</th>
+                                        <th>Total Records</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="payrollHistoryTableBody">
+                                    <!-- Payroll history will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generate PDF -->
+                <div class="card mt-4" id="generatePDFSection" style="display: none;">
+                    <div class="card-header bg-white border-bottom">
+                        <h5 class="mb-0">
+                            <i class="fas fa-file-pdf"></i> Generate PDF Slip Gaji
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Latest Month</th>
+                                        <th>Net Salary</th>
+                                        <th>Status</th>
+                                        <th>Generate PDF</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="generatePDFTableBody">
+                                    <!-- PDF generation list will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+    </div>
+
+    <!-- Payroll Modal -->
+    <div class="modal fade" id="payrollModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Manage Payroll</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="payrollForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="payrollUserId">
+                        <div class="row" id="payrollUserSelectRow" style="display:none;">
+                            <div class="col-md-12 mb-3">
+                                <label for="payrollUserSelect" class="form-label">Employee</label>
+                                <select class="form-select" id="payrollUserSelect">
+                                    <option value="">Select employee...</option>
+                                </select>
+                                <small class="text-muted">Use this when creating a new payroll record.</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="payrollMonth" class="form-label">Month (YYYY-MM)</label>
+                                <input type="month" class="form-control" id="payrollMonth" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="payrollBase" class="form-label">Base Salary</label>
+                                <input type="number" class="form-control" id="payrollBase" min="0" step="0.01" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="payrollAllowances" class="form-label">Allowances</label>
+                                <input type="number" class="form-control" id="payrollAllowances" min="0" step="0.01" value="0">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="payrollDeductions" class="form-label">Deductions</label>
+                                <input type="number" class="form-control" id="payrollDeductions" min="0" step="0.01" value="0">
+                            </div>
+                            <div class="col-md-8 mb-3">
+                                <label for="payrollNotes" class="form-label">Notes</label>
+                                <input type="text" class="form-control" id="payrollNotes" placeholder="Optional notes">
+                            </div>
+                        </div>
+
+                        <hr>
+                        <h6 class="fw-bold mb-2">Payroll History</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Month</th>
+                                        <th>Base</th>
+                                        <th>Allowances</th>
+                                        <th>Deductions</th>
+                                        <th>Net</th>
+                                        <th>PDF</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="payrollHistoryBody">
+                                    <tr><td colspan="6" class="text-center text-muted">No payroll records</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Payroll</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div class="modal fade" id="addUserModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New User</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="addUserForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="addFullName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="addFullName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addUsername" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="addUsername" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="addEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="addPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addRole" class="form-label">Role</label>
+                            <select class="form-select" id="addRole" required>
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <hr>
+                        <h6 class="fw-bold">Employee Information</h6>
+                        <div class="mb-3">
+                            <label for="addDepartment" class="form-label">Department</label>
+                            <input type="text" class="form-control" id="addDepartment" placeholder="e.g., Sales, IT, HR">
+                        </div>
+                        <div class="mb-3">
+                            <label for="addPosition" class="form-label">Position/Job Title</label>
+                            <input type="text" class="form-control" id="addPosition" placeholder="e.g., Manager, Developer">
+                        </div>
+                        <div class="mb-3">
+                            <label for="addPhone" class="form-label">Contact Phone</label>
+                            <input type="tel" class="form-control" id="addPhone" placeholder="e.g., +62-812-3456-7890">
+                        </div>
+                        <hr>
+                        <h6 class="fw-bold">Emergency Contact</h6>
+                        <div class="mb-3">
+                            <label for="addEmergencyName" class="form-label">Emergency Contact Name</label>
+                            <input type="text" class="form-control" id="addEmergencyName" placeholder="Full name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="addEmergencyPhone" class="form-label">Emergency Contact Phone</label>
+                            <input type="tel" class="form-control" id="addEmergencyPhone" placeholder="Phone number">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add User</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div class="modal fade" id="editUserModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit User</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="editUserForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="editUserId">
+                        <div class="mb-3 text-center">
+                            <img id="editUserProfilePic" src="" alt="Profile" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; display: none;">
+                            <i id="editUserDefaultIcon" class="fas fa-user-circle" style="font-size: 80px; color: #667eea;"></i>
+                            <br>
+                            <input type="file" class="form-control mt-2" id="editProfilePicture" accept="image/*">
+                            <small class="text-muted">JPG, PNG, GIF, WebP (Max 5MB)</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editFullName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="editFullName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="editEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editRole" class="form-label">Role</label>
+                            <select class="form-select" id="editRole" required>
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editStatus" class="form-label">Status</label>
+                            <select class="form-select" id="editStatus" required>
+                                <option value="true">Active</option>
+                                <option value="false">Inactive</option>
+                            </select>
+                        </div>
+                        <hr>
+                        <h6 class="fw-bold">Employee Information</h6>
+                        <div class="mb-3">
+                            <label for="editDepartment" class="form-label">Department</label>
+                            <input type="text" class="form-control" id="editDepartment" placeholder="e.g., Sales, IT, HR">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPosition" class="form-label">Position/Job Title</label>
+                            <input type="text" class="form-control" id="editPosition" placeholder="e.g., Manager, Developer">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPhone" class="form-label">Contact Phone</label>
+                            <input type="tel" class="form-control" id="editPhone" placeholder="e.g., +62-812-3456-7890">
+                        </div>
+                        <hr>
+                        <h6 class="fw-bold">Emergency Contact</h6>
+                        <div class="mb-3">
+                            <label for="editEmergencyName" class="form-label">Emergency Contact Name</label>
+                            <input type="text" class="form-control" id="editEmergencyName" placeholder="Full name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editEmergencyPhone" class="form-label">Emergency Contact Phone</label>
+                            <input type="tel" class="form-control" id="editEmergencyPhone" placeholder="Phone number">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% load static %}
+    <script>
+        // View switching functions - defined before admin.js loads
+        async function _populatePayrollUserSelectInline() {
+            const select = document.getElementById('payrollUserSelect');
+            if (!select) return;
+
+            select.innerHTML = '<option value="">Select employee...</option>';
+            try {
+                const res = await fetch('/api/users');
+                const data = await res.json();
+                const users = (data.users || []).filter(u => u.role === 'user');
+                for (const u of users) {
+                    const opt = document.createElement('option');
+                    opt.value = String(u.id);
+                    opt.textContent = `${u.full_name} (@${u.username})`;
+                    select.appendChild(opt);
+                }
+            } catch (e) {
+                // ignore
+            }
+        }
+
+        async function _loadPayrollHistoryInline(userId) {
+            const body = document.getElementById('payrollHistoryBody');
+            if (!body) return;
+            body.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Loading...</td></tr>';
+            try {
+                const res = await fetch(`/api/payroll/${userId}/history`);
+                const data = await res.json();
+                const history = data.payroll_history || [];
+                if (history.length === 0) {
+                    body.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No payroll records</td></tr>';
+                    return;
+                }
+                body.innerHTML = '';
+                for (const r of history) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${r.month}</td>
+                        <td>Rp ${Number(r.base_salary || 0).toLocaleString('id-ID')}</td>
+                        <td>Rp ${Number(r.allowances || 0).toLocaleString('id-ID')}</td>
+                        <td>Rp ${Number(r.deductions || 0).toLocaleString('id-ID')}</td>
+                        <td><strong>Rp ${Number(r.net_salary || 0).toLocaleString('id-ID')}</strong></td>
+                        <td><a class="btn btn-sm btn-outline-primary" href="/api/payroll/${userId}/pdf?month=${r.month}" target="_blank"><i class="fas fa-file-pdf"></i></a></td>
+                    `;
+                    body.appendChild(tr);
+                }
+            } catch (e) {
+                body.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Failed to load payroll history</td></tr>';
+            }
+        }
+
+        async function openPayrollCreateModal() {
+            const row = document.getElementById('payrollUserSelectRow');
+            const select = document.getElementById('payrollUserSelect');
+            const hiddenId = document.getElementById('payrollUserId');
+            const form = document.getElementById('payrollForm');
+
+            if (hiddenId) hiddenId.value = '';
+            if (row) row.style.display = 'block';
+            await _populatePayrollUserSelectInline();
+            if (select) select.value = '';
+
+            if (form) {
+                // reset fields but keep hidden
+                const month = document.getElementById('payrollMonth');
+                const base = document.getElementById('payrollBase');
+                const allow = document.getElementById('payrollAllowances');
+                const ded = document.getElementById('payrollDeductions');
+                const notes = document.getElementById('payrollNotes');
+                if (month) month.value = '';
+                if (base) base.value = '';
+                if (allow) allow.value = '0';
+                if (ded) ded.value = '0';
+                if (notes) notes.value = '';
+            }
+
+            const body = document.getElementById('payrollHistoryBody');
+            if (body) {
+                body.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Select an employee to view history</td></tr>';
+            }
+
+            const modalEl = document.getElementById('payrollModal');
+            if (modalEl && window.bootstrap && bootstrap.Modal) {
+                const m = bootstrap.Modal.getOrCreateInstance(modalEl);
+                m.show();
+            }
+
+            return false;
+        }
+
+        // Inline fallback: keep payroll modal usable even if admin.js fails to load
+        (function initInlinePayrollFallback(){
+            const select = document.getElementById('payrollUserSelect');
+            if (select) {
+                select.addEventListener('change', async function(){
+                    const userId = this.value;
+                    const hiddenId = document.getElementById('payrollUserId');
+                    if (hiddenId) hiddenId.value = userId;
+                    if (userId) await _loadPayrollHistoryInline(userId);
+                });
+            }
+
+            const form = document.getElementById('payrollForm');
+            if (form && !window.__payrollFormBound) {
+                form.addEventListener('submit', async function(e){
+                    e.preventDefault();
+                    const userId = (document.getElementById('payrollUserId')?.value || '').trim();
+                    if (!userId) return;
+                    const payload = {
+                        month: document.getElementById('payrollMonth')?.value,
+                        base_salary: document.getElementById('payrollBase')?.value,
+                        allowances: document.getElementById('payrollAllowances')?.value,
+                        deductions: document.getElementById('payrollDeductions')?.value,
+                        notes: document.getElementById('payrollNotes')?.value
+                    };
+                    try {
+                        const res = await fetch(`/api/payroll/${userId}/upsert`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        const data = await res.json();
+                        if (data.success) {
+                            await _loadPayrollHistoryInline(userId);
+                        }
+                    } catch (err) {
+                        // ignore
+                    }
+                });
+                // don't set __payrollFormBound here; admin.js should override with CSRF logic
+            }
+        })();
+
+        function setHeader(titleHtml, mode) {
+            const titleEl = document.getElementById('pageHeaderTitle');
+            const addUserBtn = document.getElementById('pageHeaderAddUserBtn');
+            const refreshBtn = document.getElementById('pageHeaderRefreshBtn');
+            const addPayrollBtn = document.getElementById('pageHeaderAddPayrollBtn');
+
+            if (titleEl && titleHtml) titleEl.innerHTML = titleHtml;
+
+            // mode: 'users' | 'payroll-input' | 'payroll-history' | 'payroll-pdf'
+            if (addUserBtn) addUserBtn.style.display = mode === 'users' ? 'inline-block' : 'none';
+            if (refreshBtn) refreshBtn.style.display = mode === 'users' ? 'none' : 'inline-block';
+            if (addPayrollBtn) addPayrollBtn.style.display = mode === 'payroll-input' ? 'inline-block' : 'none';
+
+            if (addPayrollBtn) {
+                addPayrollBtn.onclick = null;
+                if (mode === 'payroll-input') {
+                    addPayrollBtn.onclick = () => openPayrollCreateModal();
+                }
+            }
+
+            if (refreshBtn) {
+                refreshBtn.onclick = null;
+                if (mode === 'payroll-input') refreshBtn.onclick = () => window.loadPayrollUsers && window.loadPayrollUsers();
+                if (mode === 'payroll-history') refreshBtn.onclick = () => window.loadAllPayrollHistory && window.loadAllPayrollHistory();
+                if (mode === 'payroll-pdf') refreshBtn.onclick = () => window.loadPDFGenerationList && window.loadPDFGenerationList();
+            }
+        }
+
+        function showUserDirectory() {
+            const usersCard = document.getElementById('usersCard');
+            const directoryCard = document.getElementById('directoryCard');
+            const payrollManagement = document.getElementById('payrollManagement');
+            const payrollHistorySection = document.getElementById('payrollHistorySection');
+            const generatePDFSection = document.getElementById('generatePDFSection');
+            
+            if (usersCard) usersCard.style.display = 'none';
+            if (directoryCard) directoryCard.style.display = 'block';
+            if (payrollManagement) payrollManagement.style.display = 'none';
+            if (payrollHistorySection) payrollHistorySection.style.display = 'none';
+            if (generatePDFSection) generatePDFSection.style.display = 'none';
+
+            setHeader('<i class="fas fa-address-book"></i> User Directory', 'users');
+            
+            return false;
+        }
+        
+        function showUserManagement() {
+            const usersCard = document.getElementById('usersCard');
+            const directoryCard = document.getElementById('directoryCard');
+            const payrollManagement = document.getElementById('payrollManagement');
+            const payrollHistorySection = document.getElementById('payrollHistorySection');
+            const generatePDFSection = document.getElementById('generatePDFSection');
+            
+            if (usersCard) usersCard.style.display = 'block';
+            if (directoryCard) directoryCard.style.display = 'none';
+            if (payrollManagement) payrollManagement.style.display = 'none';
+            if (payrollHistorySection) payrollHistorySection.style.display = 'none';
+            if (generatePDFSection) generatePDFSection.style.display = 'none';
+
+            setHeader('<i class="fas fa-users-cog"></i> User Management', 'users');
+            
+            return false;
+        }
+        
+        function showPayrollManagement() {
+            const usersCard = document.getElementById('usersCard');
+            const directoryCard = document.getElementById('directoryCard');
+            const payrollManagement = document.getElementById('payrollManagement');
+            const payrollHistorySection = document.getElementById('payrollHistorySection');
+            const generatePDFSection = document.getElementById('generatePDFSection');
+            
+            if (usersCard) usersCard.style.display = 'none';
+            if (directoryCard) directoryCard.style.display = 'none';
+            if (payrollManagement) payrollManagement.style.display = 'block';
+            if (payrollHistorySection) payrollHistorySection.style.display = 'none';
+            if (generatePDFSection) generatePDFSection.style.display = 'none';
+
+            setHeader('<i class="fas fa-money-check"></i> Input Payroll', 'payroll-input');
+            
+            // Load payroll users if not already loaded
+            if (window.loadPayrollUsers) window.loadPayrollUsers();
+            
+            return false;
+        }
+        
+        function showPayrollHistory() {
+            const usersCard = document.getElementById('usersCard');
+            const directoryCard = document.getElementById('directoryCard');
+            const payrollManagement = document.getElementById('payrollManagement');
+            const payrollHistorySection = document.getElementById('payrollHistorySection');
+            const generatePDFSection = document.getElementById('generatePDFSection');
+            
+            if (usersCard) usersCard.style.display = 'none';
+            if (directoryCard) directoryCard.style.display = 'none';
+            if (payrollManagement) payrollManagement.style.display = 'none';
+            if (payrollHistorySection) payrollHistorySection.style.display = 'block';
+            if (generatePDFSection) generatePDFSection.style.display = 'none';
+
+            setHeader('<i class="fas fa-history"></i> View Payroll History', 'payroll-history');
+            
+            // Load payroll history if not already loaded
+            if (window.loadAllPayrollHistory) window.loadAllPayrollHistory();
+            
+            return false;
+        }
+        
+        function showGeneratePDF() {
+            const usersCard = document.getElementById('usersCard');
+            const directoryCard = document.getElementById('directoryCard');
+            const payrollManagement = document.getElementById('payrollManagement');
+            const payrollHistorySection = document.getElementById('payrollHistorySection');
+            const generatePDFSection = document.getElementById('generatePDFSection');
+            
+            if (usersCard) usersCard.style.display = 'none';
+            if (directoryCard) directoryCard.style.display = 'none';
+            if (payrollManagement) payrollManagement.style.display = 'none';
+            if (payrollHistorySection) payrollHistorySection.style.display = 'none';
+            if (generatePDFSection) generatePDFSection.style.display = 'block';
+
+            setHeader('<i class="fas fa-file-pdf"></i> Generate PDF Slip Gaji', 'payroll-pdf');
+            
+            // Load PDF generation list if not already loaded
+            if (window.loadPDFGenerationList) window.loadPDFGenerationList();
+            
+            return false;
+        }
+    </script>
+    <script src="{% static 'js/admin.js' %}"></script>
+    <script>
+        // Auto-hide scrollbar after 5 seconds
+        const sidebar = document.querySelector('.sidebar');
+        let scrollTimeout;
+        sidebar.addEventListener('scroll', () => {
+            sidebar.classList.add('scrolling');
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                sidebar.classList.remove('scrolling');
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
